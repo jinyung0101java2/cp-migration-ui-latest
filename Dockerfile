@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine
+FROM openjdk:17-alpine
 ARG JAR_FILE=build/libs/*.war
 RUN addgroup -S 1000 && adduser -S 1000 -G 1000
 RUN mkdir -p /home/1000
