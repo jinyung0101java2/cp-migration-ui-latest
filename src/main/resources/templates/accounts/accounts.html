@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<div layout:fragment="content">
+    <div id="content" class="sub-page">
+        <!--<article class="location">
+        </article>-->
+        <article class="base tab-cont-wrap">
+            <ul class="tab-btn">
+                <li type="notice-accounts" id="tab-accounts" class="active"><a href="javascript:">Accounts</a></li>
+                <li type="notice-migrations" id="tab-migrations"><a onclick="movePage(URI_CP_MIGRATIONS_CREATE)">Migrations</a></li>
+            </ul>
+            <div class="notice tab-cont-wrap">
+                <h3>List</h3>
+                <!-- User -->
+                <div class="table_style01">
+                    <!-- board -->
+                    <table>
+                        <caption>Accounts List</caption>
+                        <colgroup >
+                            <col width="20%" />
+                            <col width="10%" />
+                            <col width="40%" />
+                            <col width="30%" />
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Storage Type</th>
+                            <th scope="col">Endpoint</th>
+                            <th scope="col">Created Time</th>
+                        </tr>
+                        </thead>
+                        <tbody class="listTable">
+                        </tbody>
+                    </table>
+                    <!-- more btn -->
+                    <a class="more" href="javascript:;">more</a>
+                </div>
+                <!-- btn -->
+                <a href="javascript:;" class="create" th:text="#{M0022}"></a>
+            </div>
+        </article>
+    </div>
+</div>
+<th:block layout:fragment="script">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/hmac-sha256.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/enc-base64-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/10.2.0/jsrsasign-all-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+        window.onload = () => {
+
+            const accounts = {
+                limit : 10, // 로드 게시물 개수
+                allItemCount : 0, // 게시물 총 개수
+
+                init(){
+
+                    sessionStorage.removeItem('sourceData');
+                    sessionStorage.removeItem('destinationData');
+                    sessionStorage.setItem('accountsName' , '-');
+
+                    func.loading();
+                    if (sessionStorage.getItem('accountsData') === 'Y') {
+                        func.loadMigData('GET', `${func.vaultUrl}v1/vault/storage/${sessionStorage.getItem('userGuid')}?detail=true`, 'application/json', accounts.draw);
+                    } else if (sessionStorage.getItem('accountsData') === 'N') {
+                        var html = `<tr><td colspan="4">No Data.</td></tr>`;
+
+                        func.migAppendHtml(document.querySelector('.listTable'), html, 'tbody');
+                    }
+
+                },
+
+                async draw(data) {
+                    try {
+                        if (data !== 'undefined') {
+
+                            let type = 'vault';
+                            let decodeData = await func.responseDecodeData(data, type)
+                            let encodedData = JSON.stringify(decodeData.data)
+                            encodedData = encodedData.replaceAll("\"", "");
+
+                            let iv = decodeData.iv
+                            let aes = decodeData.aes
+                            let responseDecodeData = await responseDecodeDataWithAes(encodedData, aes, iv)
+                            let decodedData = JSON.parse(responseDecodeData)
+
+                            if (sessionStorage.getItem('accountsData') === 'N') {
+                                var html = `<tr><td colspan="4">No Data.</td></tr>`;
+
+                                func.migAppendHtml(document.querySelector('.listTable'), html, 'tbody');
+                            } else {
+                                func.migRemoveHtml(document.querySelector('.listTable'), html, 'tbody');
+
+                                accounts.allItemCount = decodedData.data.length;
+
+                                if (decodedData.data.length > 0) {
+                                    if (accounts.allItemCount > accounts.limit) {
+                                        for (var i = 0; i <= accounts.limit-1; i++) {
+                                            let originTime = '';
+                                            let createdTime1 = '';
+                                            let createdTime2 = '';
+
+                                            originTime = decodedData.data[i].metadata.created_time;
+                                            createdTime1 = originTime.substr(0, 10)
+                                            createdTime2 = originTime.substr(11, 8)
+
+                                            var html = `<tr>
+                                                <td class="left"><a href="javascript:;" data-name="${decodedData.data[i].name}">${decodedData.data[i].name}</a></td>
+                                                <td>${decodedData.data[i].data.storageType}</td>
+                                                <td>${decodedData.data[i].data.endpoint}</td>
+                                                <td>${createdTime1 + " " + createdTime2}</td>
+                                            </tr>`;
+
+                                            func.migAppendHtml(document.querySelector('.listTable'), html, 'tbody');
+                                        };
+                                    } else if (accounts.allItemCount <= accounts.limit) {
+                                        for (var i = 0; i <= accounts.allItemCount-1; i++) {
+                                            let originTime = '';
+                                            let createdTime1 = '';
+                                            let createdTime2 = '';
+
+                                            originTime = decodedData.data[i].metadata.created_time;
+                                            createdTime1 = originTime.substr(0, 10)
+                                            createdTime2 = originTime.substr(11, 8)
+
+                                            var html = `<tr>
+                                                <td class="left"><a href="javascript:;" data-name="${decodedData.data[i].name}">${decodedData.data[i].name}</a></td>
+                                                <td>${decodedData.data[i].data.storageType}</td>
+                                                <td>${decodedData.data[i].data.endpoint}</td>
+                                                <td>${createdTime1 + " " + createdTime2}</td>
+                                            </tr>`;
+
+                                            func.migAppendHtml(document.querySelector('.listTable'), html, 'tbody');
+                                        };
+                                    }
+
+                                    if (document.querySelector('.listTable').querySelectorAll('tr').length < accounts.allItemCount) {
+                                        document.querySelector('.more').classList.toggle('on', true);
+                                    } else {
+                                        document.querySelector('.more').classList.toggle('on', false);
+                                    };
+
+                                } else {
+                                    var html = `<tr><td colspan="4">No Data.</td></tr>`;
+
+                                    func.migAppendHtml(document.querySelector('.listTable'), html, 'tbody');
+                                }
+                                sessionStorage.setItem('accountsCnt', decodedData.data.length)
+                            }
+                        }
+                        accounts.listEvent();
+                    } catch (e){
+                    }
+                },
+
+                listEvent(){
+                    var listAll = document.querySelector('.listTable').querySelectorAll('a');
+
+                    for(var i=0; i<=listAll.length-1; i++){
+
+                        listAll[i].addEventListener('click', (e) => {
+                            sessionStorage.setItem('accountsName', e.target.getAttribute('data-name'));
+
+                            document.location.href = URI_CP_ACCOUNTS_LIST + URI_CP_DETAILS;
+                        }, true);
+                    };
+
+                    document.getElementById('wrap').removeChild(document.getElementById('loading'));
+                },
+
+                event(){
+
+                    document.querySelector('.create').addEventListener('click', (e) => {
+                        document.location.href = URI_CP_ACCOUNTS_CREATE;
+                    }, false);
+
+                    document.querySelector('.more').addEventListener('click', (e) => {
+                        accounts.limit += 10;
+
+                        accounts.load();
+                    }, false);
+                },
+
+                load(){
+                    func.loading();
+
+                    func.loadMigData('GET', `${func.vaultUrl}v1/vault/storage/${sessionStorage.getItem('userGuid')}?detail=true`, 'application/json', accounts.draw);
+                }
+
+            }
+
+            accounts.init();
+            accounts.event();
+            accounts.draw();
+        }
+
+        async function responseDecodeDataWithAes(data, aes, iv) {
+
+            try {
+                return CryptoJS.AES.decrypt(data.toString(), CryptoJS.enc.Hex.parse(aes),
+                    { iv: CryptoJS.enc.Hex.parse(iv),
+                        padding: CryptoJS.pad.Pkcs7,
+                        mode: CryptoJS.mode.CBC
+                    }).toString(CryptoJS.enc.Utf8);
+            } catch (error) {
+                console.log("Decrypt Error")
+            }
+        }
+    </script>
+</th:block>
+</html>
