@@ -1,11 +1,10 @@
 
 const func= {
-	migrationUrl: URI_CP_MIGRATION_API,
 	vaultUrl: URI_CP_VAULT_API,
-	// ui: 'http://localhost:8097/',
 	vaultPrivateKey: VAULT_PRIVATE_KEY,
 	vaultPublicKey: VAULT_PUBLIC_KEY,
 	vaultHmacKey: VAULT_HMAC_KEY,
+	migrationUrl: URI_CP_MIGRATION_API,
 	migPrivateKey: MIG_PRIVATE_KEY,
 	migPublicKey: MIG_PUBLIC_KEY,
 	migHmacKey: MIG_HMAC_KEY,
