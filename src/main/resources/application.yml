@@ -33,6 +33,7 @@ server:
     session:
       cookie:
         name: CPADMINPORTALSESSION
+    context-path: /cpmigui
 
 management:
   security:

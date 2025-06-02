@@ -27,7 +27,7 @@ public class IntroController {
      *
      * @return the view
      */
-    @GetMapping(value = {"/cpmigui"})
+    @GetMapping(value = {"/"})
     public Object baseView(Model model) {
         OAuthTokens oAuthTokens = restTemplateService.getKeyCloakToken();
         model.addAttribute("accessToken", oAuthTokens.getAccessToken());
