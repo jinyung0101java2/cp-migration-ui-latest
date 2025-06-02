@@ -15,7 +15,6 @@ spring:
             client-id: ${KEYCLOAK_CP_CLIENT_ID}
             client-secret: ${KEYCLOAK_CP_CLIENT_SECRET}
             authorization-grant-type: authorization_code
-#            redirect-uri: ${CP_MIGRATION_UI_URI}/login/oauth2/code/keycloak
             redirect-uri: ${CP_MIGRATION_UI_URI}/cpmigui/login/oauth2/code/keycloak
             scope:
         provider:

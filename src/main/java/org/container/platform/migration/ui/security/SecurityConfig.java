@@ -61,17 +61,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)//Spring 애플리케이션에서 HTTP 요청의 보안 구성을 담당하는 HttpSecurity 개체를 구성하는 데 사용됩니다.
-                .cors(customizer -> customizer.configurationSource(corsConfigurationSource))//Cross-Origin Resource Sharing: HTTP 헤더를 이용하여 웹 애플리케이션에 대한 자원을 다른 출처에서 접근할 수 있도록 권한을 부여하는 정책.
-                .formLogin(form -> form.disable())//security에서 제공하는 Login 폼
+        http.csrf(AbstractHttpConfigurer::disable)
+                .cors(customizer -> customizer.configurationSource(corsConfigurationSource))
+                .formLogin(form -> form.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().authenticated())//HTTP 요청에 대한 인가 설정
-                .addFilterBefore(portalOauth2SecurityFilter, UsernamePasswordAuthenticationFilter.class)//사용자 정의 필터 추가
-                .oauth2Login(oauth2 -> oauth2 //oauth2Login 설정
-                        .loginPage(propertyService.getKeycloakOauth2LoginPath()).permitAll()// 사용자를 로그인 페이지로 리다이렉트
-                        .defaultSuccessUrl("/cpmigui", true).permitAll()//로그인이 성공하면 사용자가 처음에 접근했던 페이지로 리다이렉트 시켜준다.
-//                        .defaultSuccessUrl("/", true).permitAll()
-                        .failureHandler(portalOauth2FailureHandler));// 로그인 실패시 발생하는 핸들러
+                        .anyRequest().authenticated())
+                .addFilterBefore(portalOauth2SecurityFilter, UsernamePasswordAuthenticationFilter.class)
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage(propertyService.getKeycloakOauth2LoginPath())
+                        .defaultSuccessUrl("/", true)
+                        .failureHandler(portalOauth2FailureHandler));
         return http.build();
     }
 }

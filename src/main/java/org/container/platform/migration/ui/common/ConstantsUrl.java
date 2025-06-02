@@ -13,7 +13,6 @@ public class ConstantsUrl {
     public static final String URI_CP_REFRESH_TOKEN = "/container-platform/refreshToken";
 
     public static final String URI_CP_SESSION_OUT = "/sessionout";
-    public static final String URI_CP_LOGOUT ="/logout";
     public static final String URl_CP_INACTIVE = "/inactive";
 
     public static final String URI_API_SET_CLUSTER_AUTHORITY="/setAuthority";
