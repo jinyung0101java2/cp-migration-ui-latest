@@ -74,6 +74,13 @@
                     sessionStorage.setItem('userGuid' , [[${userGuid}]]);
                     sessionStorage.setItem('accountsCnt', '0')
                     sessionStorage.setItem('accountsName' , '-');
+
+                    console.log("VAULT_PRIVATE_KEY:::: " + func.vaultPrivateKey)
+                    console.log("VAULT_PUBLIC_KEY:::: " + func.vaultPublicKey)
+                    console.log("VAULT_HMAC_KEY:::: " + func.vaultHmacKey)
+                    console.log("MIG_PRIVATE_KEY:::: " + func.migPrivateKey)
+                    console.log("MIG_PUBLIC_KEY:::: " + func.migPublicKey)
+                    console.log("MIG_HMAC_KEY:::: " + func.migHmacKey)
                 },
 
                 event() {
