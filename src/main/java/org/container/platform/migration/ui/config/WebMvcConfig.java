@@ -92,7 +92,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(customIntercepter())
-                .excludePathPatterns("/common/**")
+                .excludePathPatterns("/mig-common/**")
                 .excludePathPatterns("/css/**")
                 .excludePathPatterns("/dist/**")
                 .excludePathPatterns("/plugins/**")
