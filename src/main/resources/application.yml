@@ -55,6 +55,11 @@ key:
     private: ${MIG_PRIVATE_KEY}
     public: ${MIG_PUBLIC_KEY}
     hmac: ${MIG_HMAC_KEY}
+
+cp:
+  migration:
+    ui:
+      uri: ${CP_MIGRATION_UI_URI}
 ---
 spring:
   config:

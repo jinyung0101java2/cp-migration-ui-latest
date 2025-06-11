@@ -8,6 +8,7 @@ const func= {
 	migPrivateKey: MIG_PRIVATE_KEY,
 	migPublicKey: MIG_PUBLIC_KEY,
 	migHmacKey: MIG_HMAC_KEY,
+	cpMigrationUiUri: CP_MIGRATION_UI_URI,
 
 	setMigLocaleLang(reqUrl){
 		var request = new XMLHttpRequest();

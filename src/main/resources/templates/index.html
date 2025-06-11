@@ -75,6 +75,7 @@
                     sessionStorage.setItem('accountsCnt', '0')
                     sessionStorage.setItem('accountsName' , '-');
 
+                    console.log(func.cpMigrationUiUri)
                     console.log("vaultPrivateKey:::" + func.vaultPrivateKey)
                     console.log("vaultPublicKey:::" + func.vaultPublicKey)
                     console.log("vaultHmacKey:::" + func.vaultHmacKey)
@@ -128,7 +129,7 @@
                         "data": encodeDataWithAes
                     }
 
-                    func.saveMigData('POST', `${func.vaultUrl}v1/vault`, JSON.stringify(encodeData), true, 'application/json', movePage(URI_CP_ACCOUNTS_LIST));
+                    func.saveMigData('POST', `${func.vaultUrl}v1/vault`, JSON.stringify(encodeData), true, 'application/json', movePage(func.cpMigrationUiUri + URI_CP_ACCOUNTS_LIST));
                     sessionStorage.setItem('accountsData' , 'Y');
                 },
             };

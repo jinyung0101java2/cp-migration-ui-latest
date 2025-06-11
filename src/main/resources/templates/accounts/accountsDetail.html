@@ -49,7 +49,7 @@
             </div>
             <!-- btn -->
             <div class="btn02">
-                <button onclick="movePage(URI_CP_ACCOUNTS_LIST)" th:text="#{M0025}"></button>
+                <button onclick="movePage(func.cpMigrationUiUri + URI_CP_ACCOUNTS_LIST)" th:text="#{M0025}"></button>
                 <div>
                     <a href="javascript:;" id="delete" th:text="#{M0024}"></a>
                 </div>
@@ -116,7 +116,7 @@
 
                     if (sessionStorage.getItem('accountsCnt') === '1') {
                         sessionStorage.setItem('accountsCnt', '0')
-                        func.deleteMigData('DELETE', `${func.vaultUrl}v1/vault/storage/${sessionStorage.getItem('userGuid')}/${sessionStorage.getItem('accountsName')}`, 'application/json', movePage(URI_CP_BASE_URL));
+                        func.deleteMigData('DELETE', `${func.vaultUrl}v1/vault/storage/${sessionStorage.getItem('userGuid')}/${sessionStorage.getItem('accountsName')}`, 'application/json', movePage(func.cpMigrationUiUri + URI_CP_BASE_URL));
                         sessionStorage.removeItem('accountsData')
                     } else {
                         func.deleteMigData('DELETE', `${func.vaultUrl}v1/vault/storage/${sessionStorage.getItem('userGuid')}/${sessionStorage.getItem('accountsName')}`, 'application/json', func.migHistoryBackRefresh);

@@ -20,7 +20,7 @@
 
 .panel-image {
     vertical-align: middle;
-    content: url('/img/logo_small.png');
+    content: url('/cpmigui/img/logo_small.png');
     width: 60px;
     height: 48px;
 }

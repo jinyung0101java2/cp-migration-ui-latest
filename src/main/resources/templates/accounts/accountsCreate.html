@@ -98,7 +98,7 @@
                         if (sessionStorage.getItem('accountsCnt') === '0') {
                             func.alertMigPopup('ALERT', MSG_SAVE_ACCOUNTS, true, MSG_CONFIRM, 'closed');
                         } else {
-                            movePage(URI_CP_ACCOUNTS_LIST)
+                            movePage(func.cpMigrationUiUri + URI_CP_ACCOUNTS_LIST)
                         }
 
                     }, false);
